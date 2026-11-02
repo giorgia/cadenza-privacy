@@ -33,6 +33,42 @@ https://giorgia.github.io/cadenza-privacy/routine.html?data=<URL-encoded routine
   from (caption, video text, screenshots), so the user can check it at a
   glance.
 
+## Opening Cadenza
+
+How the link opens the app, so you can set it up and explain it:
+
+1. The user taps the https link in your reply. It opens in their browser
+   (or your app's in-app browser).
+2. The page shows the routine's title and hands off to Cadenza. iOS may ask
+   "Open in “Cadenza”?"; the user taps **Open**.
+3. Cadenza opens on its Review screen with the routine filled in. The user
+   checks it and taps Save. Nothing is saved before that.
+
+What to do in your interface:
+
+- **Plain chat reply:** put the https link on its own line, as a Markdown
+  link if supported: `[Open in Cadenza](https://giorgia.github.io/cadenza-privacy/routine.html?data=...)`.
+- **Buttons, cards, widgets or embedded HTML:** use the same https URL as
+  the `href`/action. Never `cadenza://`: these views drop custom-scheme taps
+  silently, and some reject non-https URLs outright.
+- **You can open URLs yourself** (a browser or computer-use tool on the
+  user's iPhone): open the https link, not `cadenza://`. On any other device
+  (your own sandbox, a desktop browser) don't try to open it; Cadenza is an
+  iPhone app, so just give the user the link.
+- **Tell the user what to expect** in one short line, e.g. "Tap the link,
+  then tap Open if your phone asks."
+
+If it doesn't open, tell the user:
+
+- If the page stays open, tap its **Open in Cadenza** button (some in-app
+  browsers block the automatic hand-off).
+- If the page says the routine can't be read, the link got cut off: send it
+  again, ideally shorter (leave out `video_url` first).
+- If nothing happens on the button either, Cadenza probably isn't installed
+  (it's on the App Store), or the browser blocks app links: copy the JSON
+  from your code block, open Cadenza, go to **Import**, paste it and tap
+  **Extract**.
+
 ## Steps
 
 1. **Get the workout yourself.** The user should have to do almost nothing.
