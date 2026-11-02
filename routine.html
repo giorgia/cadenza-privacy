@@ -1,27 +1,171 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
 <title>Open in Cadenza</title>
+<!--
+  Redirect page for AI assistants' Cadenza routines.
+
+  Chat apps only open http(s) links, so assistants send
+    https://giorgia.github.io/cadenza-privacy/routine.html?data=<URL-encoded routine JSON>
+  and this page forwards to cadenza://routine?data=<same JSON>, which opens the
+  Cadenza iOS app on its Review screen. `#data=` works too (kept off server logs).
+  The JSON format is documented in agent/cadenza-routine.md.
+
+  Single static file: no server, no dependencies. The checks below mirror the
+  app's own parser (Cadenza/App/AgentRoutineLink.swift) so a broken link shows
+  an explanation here instead of a dead "Open" button.
+-->
 <style>
-body { background:#0b0b10; color:#fff; font-family:-apple-system,system-ui,sans-serif; text-align:center; padding:48px 24px; }
-a.btn { display:inline-block; background:#19d3e6; color:#04222a; font-weight:700; font-size:20px; padding:16px 32px; border-radius:16px; text-decoration:none; margin-top:24px; }
-p { color:#9a9aad; }
+  :root{color-scheme:dark}
+  *{box-sizing:border-box}
+  body{margin:0;background:#0A0B0D;color:#e9e9ee;font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:48px 16px;text-align:center}
+  main{max-width:520px;margin:0 auto}
+  .brand{color:#22d3ee;font-weight:700;letter-spacing:.3px}
+  h1{font-size:26px;letter-spacing:-.4px;margin:12px 0 6px;overflow-wrap:anywhere}
+  p{color:#9a9aa5;margin:8px 0}
+  .meta{color:#c9c9d2}
+  .btn{display:inline-block;background:#22d3ee;color:#04222a;font-weight:700;font-size:19px;padding:15px 30px;border-radius:16px;text-decoration:none;margin-top:24px;border:0;font-family:inherit;cursor:pointer}
+  .btn.secondary{background:#141519;color:#e9e9ee;border:1px solid #ffffff24;font-size:16px;padding:12px 22px;margin-top:12px}
+  .box{background:#141519;border:1px solid #ffffff14;border-radius:14px;padding:16px 18px;margin:20px 0;text-align:left}
+  .box p{color:#c9c9d2}
+  [hidden]{display:none!important}
 </style>
-<script>
-var fallback = 'cadenza://routine?data=%7B%22title%22%3A%22Runner%20Legs%20Without%20the%20Run%22%2C%22sets%22%3A3%2C%22source_url%22%3A%22https%3A%2F%2Fwww.instagram.com%2Freel%2FDfAYdKzMQHh%2F%22%2C%22creator%22%3A%22jordanke%22%2C%22video_url%22%3A%22https%3A%2F%2Fscontent-dfw5-1.cdninstagram.com%2Fo1%2Fv%2Ft2%2Ff2%2Fm367%2FAQOHeOr9j6yIsYwa3sAQlPoyW7N9j0ykSh6_azVJd5PluTiz7XKmPEchmOkab6TMOwHwer8SJn4m5esSdhSeq3lCMQf2PXvyNdJUAWACjNOdqw.mp4%3F_nc_cat%3D111%26_nc_sid%3D9ca052%26_nc_ht%3Dscontent-dfw5-1.cdninstagram.com%26_nc_ohc%3DFcbX2zC_LzoQ7kNvwGgR2Zv%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmlnd3d3LUMzLmRhc2hfdnA5LWJhc2ljLWdlbjJfMTA4MHAiLCJ2aWRlb19pZCI6bnVsbCwib2lsX3VybGdlbl9hcHBfaWQiOjkzNjYxOTc0MzM5MjQ1OSwiY2xpZW50X25hbWUiOiJpZyIsInhwdl9hc3NldF9pZCI6MTk5NDQ2MDc4MTI1MDQ3NCwiYXNzZXRfYWdlX2RheXMiOjYsInZpX3VzZWNhc2VfaWQiOjEwMDk5LCJkdXJhdGlvbl9zIjoyNCwiYml0cmF0ZSI6Mzk0MjA2NiwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9%26ccb%3D17-1%26_nc_gid%3DS-lT4ihkrQFHvBOoox-osQ%26_nc_ss%3D70689%26_nc_zt%3D28%26oh%3D00_AQRqiBkStUz3f3nrxmcU5h2HFWAe0huIKOgISX3oOOd9mA%26oe%3D6AEEBF05%22%2C%22exercises%22%3A%5B%7B%22name%22%3A%22Elevated%20Sumo%20Squat%22%2C%22reps%22%3A15%2C%22section%22%3A%22main%22%7D%2C%7B%22name%22%3A%22Elevated%20Sumo%20RDL%22%2C%22reps%22%3A15%2C%22section%22%3A%22main%22%7D%2C%7B%22name%22%3A%22Split%20Squat%20%2B%20Close%20Leg%20Squat%22%2C%22reps%22%3A15%2C%22side%22%3A%22per_side%22%2C%22section%22%3A%22main%22%7D%2C%7B%22name%22%3A%22Heels%20Elevated%20Goblet%20Squat%22%2C%22reps%22%3A15%2C%22section%22%3A%22main%22%7D%2C%7B%22name%22%3A%22Heels%20Elevated%20Goblet%20Squat%20Pulse%22%2C%22duration_seconds%22%3A30%2C%22section%22%3A%22main%22%7D%2C%7B%22name%22%3A%22Single%20Leg%20Hip%20Thrust%22%2C%22reps%22%3A10%2C%22side%22%3A%22per_side%22%2C%22section%22%3A%22main%22%7D%5D%7D';
-var data = new URLSearchParams(window.location.search).get('data');
-var target = data ? 'cadenza://routine?data=' + encodeURIComponent(data) : fallback;
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('openBtn').href = target;
-});
-window.location.replace(target);
-</script>
 </head>
 <body>
-<h1>Opening Cadenza…</h1>
-<p>If nothing happens, tap the button.</p>
-<a class="btn" id="openBtn" href="cadenza://routine?data=%7B%22title%22%3A%22Runner%20Legs%20Without%20the%20Run%22%2C%22sets%22%3A3%2C%22source_url%22%3A%22https%3A%2F%2Fwww.instagram.com%2Freel%2FDfAYdKzMQHh%2F%22%2C%22creator%22%3A%22jordanke%22%2C%22video_url%22%3A%22https%3A%2F%2Fscontent-dfw5-1.cdninstagram.com%2Fo1%2Fv%2Ft2%2Ff2%2Fm367%2FAQOHeOr9j6yIsYwa3sAQlPoyW7N9j0ykSh6_azVJd5PluTiz7XKmPEchmOkab6TMOwHwer8SJn4m5esSdhSeq3lCMQf2PXvyNdJUAWACjNOdqw.mp4%3F_nc_cat%3D111%26_nc_sid%3D9ca052%26_nc_ht%3Dscontent-dfw5-1.cdninstagram.com%26_nc_ohc%3DFcbX2zC_LzoQ7kNvwGgR2Zv%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImlnLXhwdmRzLmNsaXBzLmlnd3d3LUMzLmRhc2hfdnA5LWJhc2ljLWdlbjJfMTA4MHAiLCJ2aWRlb19pZCI6bnVsbCwib2lsX3VybGdlbl9hcHBfaWQiOjkzNjYxOTc0MzM5MjQ1OSwiY2xpZW50X25hbWUiOiJpZyIsInhwdl9hc3NldF9pZCI6MTk5NDQ2MDc4MTI1MDQ3NCwiYXNzZXRfYWdlX2RheXMiOjYsInZpX3VzZWNhc2VfaWQiOjEwMDk5LCJkdXJhdGlvbl9zIjoyNCwiYml0cmF0ZSI6Mzk0MjA2NiwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9%26ccb%3D17-1%26_nc_gid%3DS-lT4ihkrQFHvBOoox-osQ%26_nc_ss%3D70689%26_nc_zt%3D28%26oh%3D00_AQRqiBkStUz3f3nrxmcU5h2HFWAe0huIKOgISX3oOOd9mA%26oe%3D6AEEBF05%22%2C%22exercises%22%3A%5B%7B%22name%22%3A%22Elevated%20Sumo%20Squat%22%2C%22reps%22%3A15%2C%22section%22%3A%22main%22%7D%2C%7B%22name%22%3A%22Elevated%20Sumo%20RDL%22%2C%22reps%22%3A15%2C%22section%22%3A%22main%22%7D%2C%7B%22name%22%3A%22Split%20Squat%20%2B%20Close%20Leg%20Squat%22%2C%22reps%22%3A15%2C%22side%22%3A%22per_side%22%2C%22section%22%3A%22main%22%7D%2C%7B%22name%22%3A%22Heels%20Elevated%20Goblet%20Squat%22%2C%22reps%22%3A15%2C%22section%22%3A%22main%22%7D%2C%7B%22name%22%3A%22Heels%20Elevated%20Goblet%20Squat%20Pulse%22%2C%22duration_seconds%22%3A30%2C%22section%22%3A%22main%22%7D%2C%7B%22name%22%3A%22Single%20Leg%20Hip%20Thrust%22%2C%22reps%22%3A10%2C%22side%22%3A%22per_side%22%2C%22section%22%3A%22main%22%7D%5D%7D">Open in Cadenza</a>
+<main>
+  <div class="brand">Cadenza</div>
+
+  <section id="ready" hidden>
+    <p>Opening your routine…</p>
+    <h1 id="title"></h1>
+    <p class="meta" id="summary"></p>
+    <a class="btn" id="openBtn" href="#">Open in Cadenza</a>
+    <p>If Cadenza doesn't open, tap the button.</p>
+    <button class="btn secondary" id="copyBtn" type="button">Copy routine text</button>
+    <p id="copyHint">Or copy it and paste it into Cadenza's Import screen.</p>
+  </section>
+
+  <section id="problem" hidden>
+    <h1 id="problemTitle">This link has no routine</h1>
+    <div class="box">
+      <p id="problemText"></p>
+      <p>Ask your AI assistant to send the routine again as a Cadenza link. If it also gave you the routine as text, copy that text and paste it into Cadenza's Import screen.</p>
+    </div>
+  </section>
+
+  <noscript>
+    <h1>Turn on JavaScript</h1>
+    <p>This page needs JavaScript to open the routine in Cadenza.</p>
+  </noscript>
+</main>
+<script>
+(function () {
+  "use strict";
+  // Same limit as the app (AgentRoutineLink.maximumPayloadBytes).
+  var MAX_PAYLOAD_BYTES = 32000;
+
+  function show(id) { document.getElementById(id).hidden = false; }
+
+  function fail(title, text) {
+    document.getElementById("problemTitle").textContent = title;
+    document.getElementById("problemText").textContent = text;
+    show("problem");
+  }
+
+  // ?data= first, then #data= (fragments never reach the server).
+  function readData() {
+    var fromQuery = new URLSearchParams(window.location.search).get("data");
+    if (fromQuery) return fromQuery;
+    var hash = window.location.hash.replace(/^#/, "");
+    return hash ? new URLSearchParams(hash).get("data") : null;
+  }
+
+  // The JSON text, or the same JSON base64url-encoded (as the app accepts).
+  function decodePayload(text) {
+    if (text.charAt(0) === "{") return text;
+    var b64 = text.replace(/-/g, "+").replace(/_/g, "/");
+    while (b64.length % 4) b64 += "=";
+    var binary = atob(b64);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+  }
+
+  function cleanName(value) {
+    return typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
+  }
+
+  var raw = readData();
+  if (raw === null || raw.trim() === "") {
+    fail("This link has no routine",
+      "The link is missing its routine (the part after \"data=\"), so there's nothing to open.");
+    return;
+  }
+  raw = raw.trim();
+  if (new TextEncoder().encode(raw).length > MAX_PAYLOAD_BYTES) {
+    fail("This routine is too long",
+      "The routine in this link is bigger than Cadenza accepts (32 KB). It may have been mangled when it was copied.");
+    return;
+  }
+
+  var routine;
+  try {
+    routine = JSON.parse(decodePayload(raw));
+  } catch (e) {
+    fail("This routine can't be read",
+      "The routine in this link isn't valid. Part of it may have been cut off when it was copied.");
+    return;
+  }
+
+  var exercises = routine && typeof routine === "object" && Array.isArray(routine.exercises) ? routine.exercises : [];
+  var named = exercises.filter(function (x) {
+    return x && cleanName(x.name_raw || x.name) !== "";
+  });
+  if (named.length === 0) {
+    fail("This routine has no exercises",
+      "The routine in this link doesn't list any exercises, so Cadenza would have nothing to show.");
+    return;
+  }
+
+  var title = cleanName(routine.title) || "Imported workout";
+  var parts = [named.length === 1 ? "1 exercise" : named.length + " exercises"];
+  var sets = Number(routine.sets);
+  if (Number.isInteger(sets) && sets > 1 && sets <= 99) parts.push(sets + " rounds");
+  var creator = cleanName(routine.creator);
+  if (creator) parts.push("by " + (creator.charAt(0) === "@" ? creator : "@" + creator));
+
+  // Forward the payload as received: the app does its own parsing.
+  var target = "cadenza://routine?data=" + encodeURIComponent(raw);
+
+  document.title = title + " · Open in Cadenza";
+  document.getElementById("title").textContent = title;
+  document.getElementById("summary").textContent = parts.join(" · ");
+  document.getElementById("openBtn").href = target;
+
+  var copyBtn = document.getElementById("copyBtn");
+  var copyHint = document.getElementById("copyHint");
+  if (navigator.clipboard && window.isSecureContext) {
+    copyBtn.addEventListener("click", function () {
+      navigator.clipboard.writeText(JSON.stringify(routine)).then(function () {
+        copyHint.textContent = "Copied. Open Cadenza, go to Import and paste it.";
+      }, function () {
+        copyHint.textContent = "Couldn't copy. Ask your assistant for the routine text instead.";
+      });
+    });
+  } else {
+    copyBtn.hidden = true;
+    copyHint.hidden = true;
+  }
+
+  show("ready");
+  // Let the title paint first, then hand the link to iOS.
+  setTimeout(function () { window.location.replace(target); }, 400);
+})();
+</script>
 </body>
 </html>
