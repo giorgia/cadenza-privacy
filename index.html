@@ -23,25 +23,47 @@
 <body>
 <main>
   <h1>Privacy Policy — <span class="brand">Cadenza</span></h1>
-  <div class="date">Effective date: 23 July 2026</div>
+  <div class="date">Effective date: 3 November 2026 · Applies to Cadenza 3.0 and later</div>
 
-  <p>Cadenza (“the app”) is a jump-rope counter that uses your AirPods’ motion sensors to count your jumps. This policy explains exactly what the app does — and does not do — with your data.</p>
+  <p>Cadenza (“the app”) counts your reps hands-free using your AirPods’ motion sensors, for jump rope and other moves such as jumping jacks, squats, burpees and lunges. It also runs workout routines, which you can import from videos, screenshots or text, write yourself, or generate from a short description. This policy explains exactly what the app does — and does not do — with your data.</p>
 
   <div class="tl">
-    <strong>The short version:</strong> Cadenza does not collect, transmit, sell, or share any personal data. Everything happens on your device. There are no accounts, no analytics, no advertising, and no third-party trackers. The app has no servers.
+    <strong>The short version:</strong> Cadenza does not collect, transmit, sell, or share any personal data. Everything happens on your device, including reading imported videos and screenshots and the on-device AI features. There are no accounts, no analytics, no advertising, and no third-party trackers. The app has no servers of its own and uploads nothing.
   </div>
 
   <h2>Motion &amp; Fitness</h2>
-  <p>Cadenza uses motion data from motion-capable AirPods (AirPods Pro, AirPods 3rd generation, or AirPods Max) to detect and count your jumps in real time. This motion data is processed entirely on your device to count jumps, and is never stored, transmitted, or shared. You are asked for Motion &amp; Fitness permission the first time the app needs it.</p>
+  <p>Cadenza uses motion data from motion-capable AirPods (AirPods Pro, AirPods 3rd generation, or AirPods Max) to detect and count your reps in real time. This motion data is processed entirely on your device to count reps, and is never stored, transmitted, or shared. You are asked for Motion &amp; Fitness permission the first time the app needs it.</p>
 
   <h2>Apple Health (HealthKit)</h2>
-  <p>With your permission, Cadenza can save each finished session to Apple Health as a Jump Rope workout (duration and jump count). Cadenza only <em>writes</em> this data to Apple Health — it does not read your health data. Health data is stored by Apple Health on your device and is protected by Apple’s privacy safeguards. Cadenza never transmits your health data off your device. You can revoke Health access at any time in <strong>Settings → Health → Data Access &amp; Devices → Cadenza</strong>.</p>
+  <p>With your permission, Cadenza works with Apple Health in two ways:</p>
+  <ul>
+    <li><strong>Writing:</strong> when you finish, Cadenza saves the session to Apple Health as a workout — a Jump Rope workout with its duration and jump count, or a routine as a Functional Strength Training workout with its duration and a per-move summary (for example, “Squats: 20 reps”).</li>
+    <li><strong>Reading:</strong> Cadenza reads back the jump-rope workouts it saved to Apple Health, so your past sessions appear in the app’s History (for example, after reinstalling the app). It does not use workouts recorded by other apps.</li>
+  </ul>
+  <p>Cadenza only works with workouts — it does not ask for or read any other health data. Health data stays in Apple Health on your device, protected by Apple’s privacy safeguards, and Cadenza never transmits it off your device or uses it for anything other than showing your History. You can change or revoke Health access at any time in <strong>Settings → Health → Data Access &amp; Devices → Cadenza</strong>.</p>
+
+  <h2>Importing workouts</h2>
+  <p>You can bring a workout into Cadenza by picking videos or screenshots from Photos or Files, by sharing them to Cadenza from another app with the Share button, or by pasting text. Cadenza only sees the items you choose; it does not browse your photo library.</p>
+  <p>To turn what you share into a routine, Cadenza reads the text in your videos and screenshots on your device (using Apple’s Vision and AVFoundation frameworks), and then organises it into a list of moves on your device using Apple’s on-device Foundation Models (Apple Intelligence). None of this is uploaded: your videos, screenshots, text, and the resulting routine never leave your device. If you share a web link without any workout text, Cadenza does not fetch it.</p>
+
+  <h2>Prompt (beta)</h2>
+  <p>Prompt lets you describe a workout in a few words (for example, “15 minutes, legs, no equipment”) and have Cadenza draft a routine. The routine is generated on your device by Apple’s on-device Foundation Models (Apple Intelligence). What you type and the routine it produces stay on your device. Prompt is only available on devices that support Apple Intelligence with it turned on.</p>
+
+  <h2>Saved videos</h2>
+  <p>When you keep a video with a routine, Cadenza stores its own copy of that video inside the app’s private storage on your device, so the routine still works if you delete the original. Thumbnails and the short clips shown for each move are made from that copy on your device. These copies are never uploaded. You can delete all of them at any time in Cadenza’s <strong>Settings → Remove videos</strong>; deleting the app also deletes them.</p>
+
+  <h2>Sharing a workout</h2>
+  <p>You can share a routine with someone as a link (<code>https://giorgia.github.io/w#…</code>). A link is only created when you choose to share. The routine is written into the part of the link after the <code>#</code>, which browsers and apps do not send to any web server, so the routine is not transmitted to or stored on any server. Anyone who has the link can see the routine it contains, so share it only with people you want to see it. A shared routine contains its title, rounds, and moves (including any custom moves it uses), plus the original creator’s handle and platform if the routine was imported with one; it never includes your videos, History, or Health data.</p>
+  <p>If the recipient has Cadenza installed, the link opens straight in the app. If not, it opens a short web page that points them to the App Store. That page, and this one, are static pages hosted by GitHub Pages. They use no cookies, analytics, advertising, or third-party scripts. As with any website, GitHub, the host, receives standard technical information (such as IP address and browser type) when a page is loaded; this is handled under <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub’s Privacy Statement</a> and does not include the routine itself.</p>
+
+  <h2>Ratings</h2>
+  <p>Cadenza may occasionally ask you to rate it using Apple’s standard App Store rating prompt. That prompt is shown and handled by iOS; Cadenza does not see whether you rated it or what you wrote.</p>
 
   <h2>On-device storage</h2>
-  <p>Your records (such as your best count and best streak) and your settings are stored locally on your device. They are not sent to any Cadenza server — Cadenza has none.</p>
+  <p>Your History, records (such as your best count and best streak), routines, custom moves, saved videos, and settings are stored locally on your device. They are not sent to any Cadenza server — Cadenza has none. Deleting the app deletes this data; workouts already saved to Apple Health stay in Apple Health until you remove them there.</p>
 
   <h2>Data sharing</h2>
-  <p>None. Cadenza does not share data with any third parties, and does not use any third-party analytics, advertising, or tracking SDKs.</p>
+  <p>None. Cadenza does not share data with any third parties, and does not use any third-party analytics, advertising, or tracking SDKs. The only time anything leaves the app is when you choose to share it yourself, such as sending a workout link.</p>
 
   <h2>Children</h2>
   <p>Cadenza is not directed to children and does not knowingly collect any information from children.</p>
